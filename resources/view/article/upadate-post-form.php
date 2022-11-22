@@ -1,9 +1,9 @@
 <?php
 
 use App\Service\Helper;
-
 $post = $data['post'];
 $allTheame = $data['group'];
+
 ?>
 
 <div class="modal fade" id="postUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabell" aria-hidden="true">
@@ -41,6 +41,7 @@ $allTheame = $data['group'];
                             </select>
                         </div>
                         <input hidden name="id" value="<?= $post['id'] ?>" type="text">
+                        <input hidden name="old-url" value="<?= $post['url'] ?>" type="text">
                         <div class="input-group mb-3">
                             <button class="btn btn-primary">Обновить</button>
                         </div>

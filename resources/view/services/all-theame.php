@@ -1,6 +1,7 @@
 <?php
 $allTheame = $data;
 ?>
+<?php if ($allTheame): ?>
 <?php foreach ($allTheame as $thema) : ?>
     <div class="col-md-12 border-bottom">
         <div class="row">
@@ -10,3 +11,4 @@ $allTheame = $data;
         </div>
     </div>
 <?php endforeach; ?>
+<?php endif; ?>

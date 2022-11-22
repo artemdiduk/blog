@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Controllers;
-
 use App\Interface\SaveFile;
 use App\Models\ArticleModel;
 use App\Models\CommentsModel;
 use App\Models\GroupModel;
 use Framework\src\Controller;
-
 class UpdatePostConroller extends Controller implements SaveFile
 {
     public function page($data = null)
@@ -22,11 +19,12 @@ class UpdatePostConroller extends Controller implements SaveFile
                         [
                             'name' => trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['name'])),
                             'url' => @$_POST['group'] . '/' . $this->urlConvert(@$_POST['name']),
+                            'oldUrl' => @$_POST['old-url'],
                             'group' => @$_POST['group'],
                             'img' => @$_FILES['images'],
                             'author' => $_SESSION['login'],
-                            'text' => htmlspecialchars(trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['description']))),
                             'id' => @$_POST['id'],
+                            'text' => htmlspecialchars(trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['description']))),
                         ],
                         $this->errorArray,
                         $modelArticle,
@@ -36,41 +34,59 @@ class UpdatePostConroller extends Controller implements SaveFile
             ],
         ]);
     }
-    public function updatePost($data, $errorHendeler, $modelArticle, $modelComments) {
+    public function updatePost($data, $errorHendeler, $modelArticle, $modelComents)
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $url = $data['url'];
-            $name = $data['name'];
-            $group = $data['group'];
-            $author = $data['author'];
-            $text = $data['text'];
-            $id = $data['id'];
+            $validator = true;
             $post =  $modelArticle->getAfew(
                 [
                     "id" => [
                         "operator" => "=",
-                        "data" => $id,
+                        "data" => $data['id'],
                         'conditions' => "AND"
                     ],
                     "author" => [
                         "operator" => "=",
-                        "data" => $author,
+                        "data" => $data['author'],
                     ],
                 ],
-
+                false
             );
-            if($res = $post[0]) {
-                $post = $post[0];
-               if($post['name'] != $name) {
-                   $nameUpdate = (strlen($name) <= 200) ? $name : $errorHendeler[] = "У названии темы не должно быть больше 200 символов.";
-
-               }
-               if($post['group'] != $group) {
-                    $groupUpdate = $group;
-               }
-               $textUpdate = (!$this->checkText($text)) ? $errorHendeler[] = 'Текста должно быть не больше 3000 символов.' : $this->checkText($text);
-               dd($nameUpdate, $groupUpdate, $textUpdate);
-
+            if($data['url'] != $data['oldUrl']) {
+                $validator  = $modelArticle->getAfew(
+                [
+                    "url" => [
+                        "operator" => "=",
+                        "data" => $data['url'],
+                    ],
+                ],
+                );
+            }
+            if ($post && is_array($validator) == false) {
+                $name = (strlen($data['name']) <= 200) ? ['name' => $data['name']] : $errorHendeler[] = "У названии темы не должно быть больше 200 символов.";
+                $text = (!$this->checkText($data['text'])) ? $errorHendeler[] = 'Текста должно быть не больше 3000 символов.' : $this->checkText($data['text']);
+                $textUpdate = ['text' => $text];
+                $group = ['group' => $data['group']];
+                $url = ['url' => $data['url']];
+                $img = ['img' => $post['img']];
+                if($data['img']['full_path'] != '') {
+                    $img = ['img' => $this->validateImg($data['img'], 3145728, "image/png, image/jpeg", $data['url'], 'C:/xampp/htdocs/blog/app/public/img/post/')];
+                }
+                if (!empty($errorHendeler)) {
+                   self::redirect("/blog/{$data['url']}");
+                }
+                $this->isUpdataLoneliness($data['oldUrl'], $data['url'], [$modelComents], 'post');
+                $this->isUpdata([$name, $textUpdate, $group, $url, $img], $modelArticle, $data['id']);
+                self::redirect("/blog/{$data['url']}");
+                
+            } 
+            else {
+                self::redirect("/blog/{$data['url']}");
             }
         }
+        self::redirect("/blog/{$data['url']}");
+       
     }
+   
+    
 }

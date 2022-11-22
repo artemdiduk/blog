@@ -6,7 +6,7 @@ abstract class Model
     public $db;
     public function __construct()
     {
-        $this->db = new Database('localhost', "root", 'root', 'blog');
+        $this->db = new Database('localhost', "root", '', 'blog');
     }
     public function get()
     {
@@ -70,7 +70,7 @@ abstract class Model
         return $this->db->getUnique($this->table, $keys, $values, $fields);
 
     }
-    public function getaFew($data)
+    public function getaFew($data , $fields = true)
     {
         $strGetaFew = "";
         foreach($data as $essenceName => $essenceData) {
@@ -86,11 +86,31 @@ abstract class Model
         }
         $strGetaFew = trim(preg_replace('/[^\S\r\n]+/', ' ', $strGetaFew));
         $strGetaFew = str_replace('-double', '',  $strGetaFew);
-        return $this->db->getaFew($this->table, $strGetaFew);
+        return $this->db->getaFew($this->table, $strGetaFew, $fields);
 
-      
-      
-        
+            
+    }
+    public function update($dataGood, $id)
+    {
+        $str = '';
+        foreach($dataGood as $item) {
+            foreach($item as $key => $value) {
+                if ($item == end($dataGood)) {
+                    $str .= "`{$key}` = '$value' WHERE `id`= $id";
+                }
+                else {
+                    $str .= "`{$key}` = '$value', ";
+                }
+            }
+        }
+       
+        return  $this->db->update($this->table, $str);
+       
+    }
+    public function updateLoneliness($elementNew, $elementOld, $what)
+    {
+        $str = "`{$what}` = '$elementNew' WHERE `$what`= '$elementOld'";
+        return  $this->db->update($this->table, $str);
     }
     public function getDefinitionData($argument) {
         return $this->db->getDefinitionData($this->table, $argument);

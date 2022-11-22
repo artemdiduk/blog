@@ -162,4 +162,15 @@ abstract class Controller implements SaveFile
             return  false;
         }
     }
+    public function isUpdataLoneliness($elementOld, $elementNew, $models, $what)
+    {
+        foreach ($models as $model) {
+            $model->updateLoneliness($elementNew, $elementOld, $what);
+        }
+    }
+    public function isUpdata($arr, $modelArticle, $id)
+    {
+        $modelArticle->update($arr, $id);
+    }
+    
 }

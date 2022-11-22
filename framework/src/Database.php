@@ -56,13 +56,19 @@ class Database
         $result =  mysqli_query($this->connection, "SELECT * FROM `$table` WHERE {$key} = {$value} ");
         return mysqli_fetch_all($result);
     }
-    public function getaFew($table, $strAFew)
+    public function getaFew($table, $strAFew, $fields = true)
     {
         $result =  mysqli_query($this->connection, "SELECT * FROM `$table` WHERE $strAFew ");
         $row = [];
         if (mysqli_num_rows($result) > 0) {
             while ($res = mysqli_fetch_assoc($result)) {
-                $row[] = $res;
+                if(!$fields) {
+                    $row = $res;
+                }
+                else {
+                    $row[] = $res;
+                }
+                
             }
             return $row;
         }
@@ -84,5 +90,10 @@ class Database
         $sql = "DELETE  FROM `$table` WHERE $strAFew ";
        return mysqli_query($this->connection, $sql);
     }
-    // SELECT * FROM table WHERE count=5 AND id < 100
+    public  function update($table, $str)
+    {
+        $sql = "UPDATE  `$table` SET $str";
+        return mysqli_query($this->connection, $sql);
+        
+    }
 }
