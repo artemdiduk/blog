@@ -70,7 +70,7 @@ class UpdatePostConroller extends Controller implements SaveFile
                 $url = ['url' => $data['url']];
                 $img = ['img' => $post['img']];
                 if($data['img']['full_path'] != '') {
-                    $img = ['img' => $this->validateImg($data['img'], 3145728, "image/png, image/jpeg", $data['url'], 'C:/xampp/htdocs/blog/app/public/img/post/')];
+                    $img = ['img' => $this->validateImg($data['img'], 3145728, "image/png, image/jpeg", $data['url'], $this->saveArticleImgPath)];
                 }
                 if (!empty($errorHendeler)) {
                    self::redirect("/blog/{$data['url']}");

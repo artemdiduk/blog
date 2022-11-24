@@ -6,7 +6,9 @@ use App\Interface\SaveFile;
 use App\Service\Helper;
 
 abstract class Controller implements SaveFile
-{
+{   
+    public $saveArticleImgPath = 'C:/xampp/htdocs/blog/app/public/img/post/';
+    public $saveCommentsImgPath =  'C:/xampp/htdocs/blog/app/public/img/comments/';
     protected $errorArray = [];
     public static function redirect($page)
     {
@@ -14,7 +16,7 @@ abstract class Controller implements SaveFile
     }
 
     protected  function  render($arr)
-    {
+    {    
         session_start();
         $this->isLogin('login');
         foreach ($arr as $datas) {
@@ -35,6 +37,7 @@ abstract class Controller implements SaveFile
     }
     protected function layout($layout)
     {
+        
         require_once __DIR__  . "/../../resources/layout/{$layout}.php";
     }
     protected function login($menthod, $model)
@@ -58,8 +61,9 @@ abstract class Controller implements SaveFile
                     ]
                 ))) {
                     foreach ($userArr as $user) {
+                        session_start();
                         $_SESSION['login'] = $user['name'];
-                        self::redirect('blog/');
+                        self::redirect("/blog");
                     }
                 }
                 $this->errorArray[] = 'Неверные данные';

@@ -11,7 +11,6 @@ class CreateArticleController  extends Controller implements SaveFile
 {
     public function page($data = null)
     {
-
         $modelArticle = new ArticleModel();
         $model = new GroupModel();
         $this->render([
@@ -64,7 +63,7 @@ class CreateArticleController  extends Controller implements SaveFile
             ))) {
                 $name = (strlen($name) <= 200) ? $name : $errorHendeler[] = "У названии темы не должно быть больше 200 символов.";
                 $text = (!$this->checkText($data['text'])) ? $errorHendeler[] = 'Текста должно быть не больше 3000 символов.' : $this->checkText($data['text']);
-                $img = $this->validateImg($data['img'], 3145728, "image/png, image/jpeg", $url, 'C:/xampp/htdocs/blog/app/public/img/post/' );
+                $img = $this->validateImg($data['img'], 3145728, "image/png, image/jpeg", $url, $this->saveArticleImgPath );
                 session_start();
                 if (is_array($img)) {
                     $errorHendeler[] = $img['error'];

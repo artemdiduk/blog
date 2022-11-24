@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <div class="" id="navbarNavDropdown">
@@ -8,10 +7,10 @@
 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login">Авторизация</a>
+                    <a class="nav-link" href="/blog/login">Авторизация</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="registration">Регистрация</a>
+                    <a class="nav-link" href="/blog/registration">Регистрация</a>
                 </li>
             </ul>
         </div>

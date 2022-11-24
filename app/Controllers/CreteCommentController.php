@@ -13,7 +13,7 @@ class CreteCommentController extends Controller
         $nameUser = $_SESSION['login'];
         $text =  htmlspecialchars(trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['text'])));
         $post =  @$_POST['post'];
-        $img = $this->validateImg(@$_FILES['images'], 3145728, "image/png, image/jpeg", $nameUser, '/Applications/MAMP/htdocs/blog/app/public/img/coments/');
+        $img = $this->validateImg(@$_FILES['images'], 3145728, "image/png, image/jpeg", $nameUser, $this->saveCommentsImgPath);
         $commentsImg = (is_string($img) && $img != "") ?  $img : "";
         
         $this->create([

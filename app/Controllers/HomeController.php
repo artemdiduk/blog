@@ -12,7 +12,7 @@ class HomeController extends  Controller
                 'all-theame' => $model->get()
             ],
         ]);
-      
+       
         $this->layout('Home');
         
     }

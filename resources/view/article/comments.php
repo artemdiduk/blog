@@ -19,7 +19,7 @@ $comments = $data;
                 <p><?= $comment['text'] ?></p>
             </div>
             <?php if ($comment['img']) : ?>
-                <img src="<?= Helper::path() ?>img/coments/<?= $comment['img'] ?>" alt="">
+                <img src="<?= Helper::path() ?>img/comments/<?= $comment['img'] ?>" alt="">
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
