@@ -1,14 +1,15 @@
 <?php
 
 namespace Framework\src;
-
+use Framework\Database\Connection;
 class Database
 {
     public $connection;
 
-    public function __construct($server, $user, $password, $dataBase)
+    public function __construct()
     {
-        $this->connection = mysqli_connect($server, $user, $password, $dataBase);
+        $this->connection = Connection::setInstances()->connectDb();
+       
         if (!$this->connection) {
             throw new Exception("Нет подключение к бд");
         }

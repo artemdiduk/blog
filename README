@@ -20,7 +20,7 @@ $saveArticleImgPath = 'C:/xampp/htdocs/blog/app/public/img/post/';
 Комментарии
 $saveCommentsImgPath =  'C:/xampp/htdocs/blog/app/public/img/comments/';
 ---Роутинг--
-Подключение Сушностеть происходит в папке app/router
+Подключение Сушностей происходит в папке app/router
 Пример
 $routs->setRout('Назва url куда перейдет юзер', Контроллер который отроботает);
 

@@ -6,7 +6,7 @@ abstract class Model
     public $db;
     public function __construct()
     {
-        $this->db = new Database('localhost', "root", '', 'blog');
+        $this->db = new Database();
     }
     public function get()
     {
