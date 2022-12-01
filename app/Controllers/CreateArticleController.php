@@ -78,7 +78,7 @@ class CreateArticleController  extends Controller implements SaveFile
                         "text" => $text,
                         'img' => $img,
                         'group' => $group,
-                        'author' => $_SESSION['login'],
+                        'author' => $_SESSION['login']['slug'],
                     ],
                     "model" => $model,
                 ],

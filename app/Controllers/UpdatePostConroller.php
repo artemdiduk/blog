@@ -22,7 +22,7 @@ class UpdatePostConroller extends Controller implements SaveFile
                             'oldUrl' => @$_POST['old-url'],
                             'group' => @$_POST['group'],
                             'img' => @$_FILES['images'],
-                            'author' => $_SESSION['login'],
+                            'author' => $_SESSION['login']['slug'],
                             'id' => @$_POST['id'],
                             'text' => htmlspecialchars(trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['description']))),
                         ],

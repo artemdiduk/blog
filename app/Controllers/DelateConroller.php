@@ -13,7 +13,7 @@ class DelateConroller extends Controller
         $modelComments = new CommentsModel();
         $this->delate([
             'url' => @$_POST['post'],
-            'author' => @$_SESSION['login'],
+            'author' => @$_SESSION['login']['slug'],
         ],
             $modelArticle,
             $modelComments,
