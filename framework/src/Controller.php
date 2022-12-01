@@ -4,7 +4,7 @@ namespace Framework\src;
 
 use App\Interface\SaveFile;
 use App\Service\Helper;
-
+use Framework\auth\Auth;
 abstract class Controller implements SaveFile
 {   
     public $saveArticleImgPath = 'C:/xampp/htdocs/blog/app/public/img/post/';
@@ -18,7 +18,7 @@ abstract class Controller implements SaveFile
     protected  function  render($arr)
     {    
         session_start();
-        $this->isLogin('login');
+        Helper::$isLogin = Auth::user();
         foreach ($arr as $datas) {
             Helper::$data = $datas;
         }
@@ -40,73 +40,7 @@ abstract class Controller implements SaveFile
         
         require_once __DIR__  . "/../../resources/layout/{$layout}.php";
     }
-    // protected function login($menthod, $model)
-    // {
-    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //         $email = trim($menthod['email']);
-    //         $password = md5(trim($menthod['password']));
-    //         if (isset($email) && isset($password)) {
-    //             if (!empty($userArr = $model->getAfew(
-    //                 [
-    //                     "email" => [
-    //                         "operator" => "=",
-    //                         "data" => $email,
-    //                         'conditions' => "AND"
-    //                     ],
-    //                     "password" => [
-    //                         "operator" => "=",
-    //                         "data" => $password,
-    //                     ],
 
-    //                 ]
-    //             ))) {
-    //                 foreach ($userArr as $user) {
-    //                     session_start();
-    //                     $_SESSION['login'] = $user['name'];
-    //                     self::redirect("/blog");
-    //                 }
-    //             }
-    //             $this->errorArray[] = 'Неверные данные';
-    //             return $this->errorArray;
-    //         }
-    //         $this->errorArray[] = 'Заполните все поля';
-    //         return $this->errorArray;
-    //     }
-    // }
-    protected function registration($menthod, $model)
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $name = strtolower(trim($menthod['name']));
-            $email = trim($menthod['email']);
-            $password = trim($menthod['password']);
-            $slug = trim($menthod['name']);
-            if (strlen($name) < 3 || ctype_digit($name)) {
-                $this->errorArray[] = 'Некорректное  имя (Имя не должно состоять с цифр или имя меньшие трьох символов)';
-            } else if (!empty($model->getUnique(["name" => $name], true))) {
-                $this->errorArray[] = 'Такой узер уже єсть';
-            }
-            if (!isset($email)) {
-                $this->errorArray[] = 'Заполните почту';
-            } else if (!empty($model->getUnique(["email" => $email], true))) {
-                $this->errorArray[] = 'Такая почта уже зарегестрируваная';
-            }
-            if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/", $password)) {
-                $this->errorArray[] = 'Пароль минимум 6 символов, только лат. Буквы, с цифрами и одной заглавной';
-            }
-            if (empty($this->errorArray)) {
-                $model->create(
-                    [
-                        "name" => $name,
-                        'email' => $email,
-                        "password" => md5($password),
-                        "slug" => $slug
-                    ]
-                );
-                self::redirect('login');
-            }
-            return $this->errorArray;
-        }
-    }
     protected function urlConvert($arg)
     {
         $arg = htmlspecialchars($arg);
@@ -127,12 +61,7 @@ abstract class Controller implements SaveFile
         }
         return implode(PHP_EOL, $html);
     }
-    private function isLogin($nameSession)
-    {
-        if (!empty($_SESSION[$nameSession])) {
-            Helper::$isLogin = $_SESSION[$nameSession];
-        }
-    }
+    
     public function validateImg($img, $size, $type, $name, $save)
     {
         if (empty($img['name'])) {

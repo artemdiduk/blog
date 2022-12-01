@@ -5,7 +5,7 @@ namespace Framework\ErrorReporting;
 class Error
 {
     private static $errorHendeler = [];
-
+   
     public static function setError($mesage)
     {
         self::$errorHendeler[] = $mesage;
@@ -14,13 +14,13 @@ class Error
     {
         return self::$errorHendeler;
     }
-    public static function isError($data, $method)
+    public static function isError($data, $method, $page = null)
     {
         if ($_SERVER["REQUEST_METHOD"] == $method) {
             if (!$data) {
                 return self::$errorHendeler;
             }
-            header('Location: /blog');
+            header("Location: $page");
         }
     }
 }

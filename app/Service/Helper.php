@@ -8,7 +8,9 @@ abstract class Helper
     public static $view;
     public static $viewTemplate = [];
     public static $isLogin;
- 
+    
+
+
     public static function viewPlug($name, $catalog)
     {
 

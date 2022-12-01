@@ -11,8 +11,9 @@ class LoginController extends Controller
         $this->render([
             "data" => [
                 'form-login' => Error::isError(
-                     Auth::acceptAuth(isset($_POST['email']), isset($_POST['password'])),
+                     Auth::acceptAuth(@$_POST['email'], @$_POST['password']),
                     "POST",
+                    "/blog",
                 ),
             ],
         ]);
