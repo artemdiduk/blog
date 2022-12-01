@@ -8,6 +8,7 @@ class Database
 
     public function __construct()
     {
+       
         $this->connection = Connection::setInstances()->connectDb();
        
         if (!$this->connection) {

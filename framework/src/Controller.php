@@ -40,39 +40,39 @@ abstract class Controller implements SaveFile
         
         require_once __DIR__  . "/../../resources/layout/{$layout}.php";
     }
-    protected function login($menthod, $model)
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = trim($menthod['email']);
-            $password = md5(trim($menthod['password']));
-            if (isset($email) && isset($password)) {
-                if (!empty($userArr = $model->getAfew(
-                    [
-                        "email" => [
-                            "operator" => "=",
-                            "data" => $email,
-                            'conditions' => "AND"
-                        ],
-                        "password" => [
-                            "operator" => "=",
-                            "data" => $password,
-                        ],
+    // protected function login($menthod, $model)
+    // {
+    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //         $email = trim($menthod['email']);
+    //         $password = md5(trim($menthod['password']));
+    //         if (isset($email) && isset($password)) {
+    //             if (!empty($userArr = $model->getAfew(
+    //                 [
+    //                     "email" => [
+    //                         "operator" => "=",
+    //                         "data" => $email,
+    //                         'conditions' => "AND"
+    //                     ],
+    //                     "password" => [
+    //                         "operator" => "=",
+    //                         "data" => $password,
+    //                     ],
 
-                    ]
-                ))) {
-                    foreach ($userArr as $user) {
-                        session_start();
-                        $_SESSION['login'] = $user['name'];
-                        self::redirect("/blog");
-                    }
-                }
-                $this->errorArray[] = 'Неверные данные';
-                return $this->errorArray;
-            }
-            $this->errorArray[] = 'Заполните все поля';
-            return $this->errorArray;
-        }
-    }
+    //                 ]
+    //             ))) {
+    //                 foreach ($userArr as $user) {
+    //                     session_start();
+    //                     $_SESSION['login'] = $user['name'];
+    //                     self::redirect("/blog");
+    //                 }
+    //             }
+    //             $this->errorArray[] = 'Неверные данные';
+    //             return $this->errorArray;
+    //         }
+    //         $this->errorArray[] = 'Заполните все поля';
+    //         return $this->errorArray;
+    //     }
+    // }
     protected function registration($menthod, $model)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
