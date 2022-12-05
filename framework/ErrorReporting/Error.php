@@ -14,12 +14,16 @@ class Error
     {
         return self::$errorHendeler;
     }
-    public static function isError($data, $method, $page = null)
+    public static function isError($data, $method, $page = null, $notErrorHendeler = false)
     {
         if ($_SERVER["REQUEST_METHOD"] == $method) {
+            if($notErrorHendeler && !$data) {
+                header("Location: $page");
+            }
             if (!$data) {
                 return self::$errorHendeler;
             }
+
             header("Location: $page");
         }
     }

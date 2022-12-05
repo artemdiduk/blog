@@ -23,7 +23,7 @@ class Connection
 
     public function connectDb(){
         if(!$this->db) {
-            $this->db = mysqli_connect('localhost', "root", '', 'blog');
+            $this->db = mysqli_connect('localhost', "root", 'root', 'blog');
         }
         return $this->db;
     }

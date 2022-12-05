@@ -1,100 +1,42 @@
 <?php
 
 namespace App\Controllers;
-
-use App\Interface\SaveFile;
 use App\Models\ArticleModel;
 use App\Models\GroupModel;
 use Framework\src\Controller;
-
-class CreateArticleController  extends Controller implements SaveFile
+use Framework\ErrorReporting\Error;
+use Framework\posts\Creater;
+use Framework\posts\CreatorMedhodHepler;
+class CreateArticleController extends Controller
 {
     public function page($data = null)
     {
-        $modelArticle = new ArticleModel();
         $model = new GroupModel();
+        $redirect =  @$_POST['group']. '/' . CreatorMedhodHepler::urlConvert(@$_POST['name']);
         $this->render([
             "data" => [
                 'form-add-post' => [
                     'group' => $model->get(),
-                    'errorPost' => $this->CreatePost(
-                        [
-                            'name' => trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['name'])),
-                            'url' => @$_POST['group'] . '/' . $this->urlConvert(@$_POST['name']),
-                            'group' => @$_POST['group'],
-                            'img' => @$_FILES['images'],
-                            'text' => htmlspecialchars(trim(preg_replace('/[^\S\r\n]+/', ' ', @$_POST['description']))),
-                        ],
-                        $this->errorArray,
-                        $modelArticle
+                    'errorPost' =>
+                        Error::isError(
+                        Creater::acceptCreatePost(
+                            [
+                                'name' =>  @$_POST['name'],
+                                'url' => @$_POST['url'],
+                                'group' => @$_POST['group'],
+                                'img' => @$_FILES['images'],
+                                'text' =>  @$_POST['description'],
+                            ],
+                            "/Applications/MAMP/htdocs/blog/app/public/img/post/"
+                        ),
+                        "POST",
+                        "/blog/$redirect"
                     ),
                 ],
             ],
         ]);
-
         $this->layout('create-article');
     }
 
-    public function saveImage($storage, $to , $file)
-    {
-
-        move_uploaded_file("$storage", "$to" . "$file");
-    }
-
-    public function CreatePost($data, $errorHendeler, $model)
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $url = $data['url'];
-            $name = $data['name'];
-            $group = $data['group'];
-            if (empty($model->getAfew(
-                [
-                    "name" => [
-                        "operator" => "=",
-                        "data" => $name,
-                        'conditions' => "AND"
-                    ],
-                    "url" => [
-                        "operator" => "=",
-                        "data" => $url,
-                    ],
-                ]
-                
-            ))) {
-                $name = (strlen($name) <= 200) ? $name : $errorHendeler[] = "У названии темы не должно быть больше 200 символов.";
-                $text = (!$this->checkText($data['text'])) ? $errorHendeler[] = 'Текста должно быть не больше 3000 символов.' : $this->checkText($data['text']);
-                $img = $this->validateImg($data['img'], 3145728, "image/png, image/jpeg", $url, $this->saveArticleImgPath );
-                session_start();
-                if (is_array($img)) {
-                    $errorHendeler[] = $img['error'];
-                }
-                if (!empty($errorHendeler)) {
-                    return $errorHendeler;
-                }
-                $this->create([
-                    "data" => [
-                        "name" =>  $name,
-                        "url" =>  $url,
-                        "text" => $text,
-                        'img' => $img,
-                        'group' => $group,
-                        'author' => $_SESSION['login']['slug'],
-                    ],
-                    "model" => $model,
-                ],
-                true);
-                self::redirect("/blog/$url");
-            }
-            else {
-                $errorHendeler[] = 'Такая статья существует';
-                return $errorHendeler;
-            }
-
-        }
-
-    }
-    
-
-   
 
 }
