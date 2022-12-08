@@ -8,16 +8,16 @@ use Framework\posts\CreteComment;
 use Framework\posts\Delate;
 class Creater
 {
-    public static function acceptCreatePost($data, $path) {
+    public static function acceptCreatePost($data) {
         $createPost = new CreaterPost();
-        if($createPost->createPost($data, $path)) {
+        if($createPost->createPost($data)) {
             return true;
         }
         return  false;
     }
-    public static function acceptUpdatePost($data, $path) {
+    public static function acceptUpdatePost($data) {
         $updatePost = new UpdatePost();
-        if($updatePost->updatePost($data, $path)) {
+        if($updatePost->updatePost($data)) {
             return  true;
         }
         return  false;
@@ -29,9 +29,9 @@ class Creater
         }
         return  false;
     }
-    public  static  function acceptCreateComment($data, $path) {
+    public  static  function acceptCreateComment($data) {
         $comment = new CreteComment();
-        if($comment->createComment($data, $path)) {
+        if($comment->createComment($data)) {
             return true;
         }
         return  false;

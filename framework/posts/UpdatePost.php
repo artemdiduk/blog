@@ -5,9 +5,10 @@ use Framework\posts\CreatorMedhodHepler;
 use App\Models\ArticleModel;
 use App\Models\CommentsModel;
 use Framework\services\Services;
+use Framework\storage\Storage;
 class UpdatePost
 {
-    public function updatePost($data, $path)
+    public function updatePost($data)
     {
         $name = trim(preg_replace('/[^\S\r\n]+/', ' ', $data['name']));
         $group = $data['group'];
@@ -49,6 +50,7 @@ class UpdatePost
 
         $imgOld = $post['img'];
 
+        $services  = new Storage($this);
         if($img['tmp_name'] == '') {
             $img =  $imgOld;
         }
@@ -56,7 +58,7 @@ class UpdatePost
             return false;
         }
         else {
-            $img = Services::saveImage($img, $url, $path);
+            $img = $services->saveImage($img, $url);
         }
         CreatorMedhodHepler::updata([
             ["name" => $name],

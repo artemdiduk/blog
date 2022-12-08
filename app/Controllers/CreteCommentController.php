@@ -15,7 +15,6 @@ class CreteCommentController extends Controller
             'post' => @$_POST['post'],
             'img' => @$_FILES['images'],
         ],
-        "/Applications/MAMP/htdocs/blog/app/public/img/comments/"
         );
         $post =  @$_POST['post'];
         self::redirect("/blog/$post");
