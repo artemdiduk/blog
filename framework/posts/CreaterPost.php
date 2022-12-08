@@ -1,13 +1,12 @@
 <?php
 namespace Framework\posts;
-use App\Interface\SaveFile;
 use Framework\ErrorReporting\Error;
 use Framework\posts\CreatorMedhodHepler;
-use Framework\services\Services;
+use Framework\storage\Storage;
 use App\Models\ArticleModel;
 class CreaterPost
 {
-    public function createPost($data, $path) {
+    public function createPost($data) {
         $name = trim(preg_replace('/[^\S\r\n]+/', ' ', $data['name']));
         $group = $data['group'];
         $url = $group . '/' . CreatorMedhodHepler::urlConvert($name);
@@ -29,6 +28,7 @@ class CreaterPost
         }
         if(empty(Error::getError())){
             session_start();
+            $storage = new Storage($this);
             $modePost->create(
                 [
                     'name' => $name,
@@ -36,7 +36,7 @@ class CreaterPost
                     'text' => CreatorMedhodHepler::parseToHtmlText($text),
                     'group' => $group,
                     'author' => $_SESSION['login']['slug'],
-                    'img' => Services::saveImage($img, $url, $path),
+                    'img' =>  $storage->saveImage($img, $url),
                 ]
             );
             return true;

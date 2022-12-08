@@ -27,7 +27,6 @@ class CreateArticleController extends Controller
                                 'img' => @$_FILES['images'],
                                 'text' =>  @$_POST['description'],
                             ],
-                            "/Applications/MAMP/htdocs/blog/app/public/img/post/"
                         ),
                         "POST",
                         "/blog/$redirect"

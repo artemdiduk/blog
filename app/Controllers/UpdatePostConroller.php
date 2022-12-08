@@ -27,7 +27,6 @@ class UpdatePostConroller extends Controller
                                     'author' => $_SESSION['login']['slug'],
                                     'oldUrl' => @$_POST['old-url'],
                                 ],
-                                "/Applications/MAMP/htdocs/blog/app/public/img/post/"
                             ),
                             "POST",
                             "/blog/$redirect",
