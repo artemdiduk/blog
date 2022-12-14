@@ -20,20 +20,7 @@ class UpdatePost
         $oldUrl = $data['oldUrl'];
         $modelArticle = new ArticleModel();
         $modelComments = new CommentsModel();
-        $post = $modelArticle->getAfew([
-                    "id" => [
-                        "operator" => "=",
-                        "data" => $id,
-                        'conditions' => "AND"
-                    ],
-                    "author" => [
-                        "operator" => "=",
-                        "data" => $author,
-                    ],
-                ],
-                false
-        );
-
+        $post = $modelArticle->getAfew('id', $id, '=', "AND")->getAfew('author', $author, '=')->get(false);
         if(!$post) {
             return false;
         }
@@ -60,17 +47,14 @@ class UpdatePost
         else {
             $img = $services->saveImage($img, $url);
         }
-        CreatorMedhodHepler::updata([
-            ["name" => $name],
-            ['text' => CreatorMedhodHepler::parseToHtmlText($text)],
-            ['group' => $group],
-            ['url' => $url],
-            ['img' => $img],
-        ],
-            $modelArticle,
-            $id
-        );
-        CreatorMedhodHepler::updataMoreData($oldUrl, $url, [$modelComments], 'post');
+        $modelArticle->update("name", $name)->
+        update("text", CreatorMedhodHepler::parseToHtmlText($text))->
+        update('group', $group)->
+        update('url', $url)->
+        update('img', $img)->
+        setWhere('id', $id)->
+        getUpdate();
+        $modelComments->update('post', $url)->setWhere('post', $oldUrl)->getUpdate();
         return true;
 
 

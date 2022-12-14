@@ -10,47 +10,15 @@ class Delate
         $author = $data['author'];
         $modelPost = new ArticleModel();
         $modelComments = new CommentsModel();
-        $post = $modelPost->getAfew(
-                [
-                    "url" => [
-                        "operator" => "=",
-                        "data" => $url,
-                        'conditions' => "AND"
-                    ],
-                    "author" => [
-                        "operator" => "=",
-                        "data" => $author,
-                    ],
-                ]
-        );
-        $comments = $modelComments->getAfew([
-                    "post" => [
-                        "operator" => "=",
-                        "data" => $data['url'],
-                        'conditions' => "AND"
-                    ],
-                    "user" => [
-                        "operator" => "=",
-                        "data" => $data['author'],
-                    ],
-                ]);
+        $post = $modelPost->getAfew('url', $url, "AND")->getAfew('author', $author)->get(false);
+        $comments = $modelComments->getAfew('post', $url, "AND")->getAfew('user', $author)->get(false);
         if(!$post) {
            return false;
         }
-        $modelPost->delate([
-                        "url" => [
-                        "operator" => "=",
-                        "data" => $url,
-                        ]
-        ]);
+        
+        $modelPost->getAfew('url', $url)->delate();
         if($comments) {
-            $modelComments->delate([
-                "post" => [
-                        "operator" => "=",
-                        "data" => $url,
-                ],
-
-            ]);
+             $modelComments->getAfew('post', $url)->delate();
         }
         return  true;
 

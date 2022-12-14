@@ -13,7 +13,7 @@ class CreaterPost
         $text = $data['text'];
         $img = $data['img'];
         $modePost = new ArticleModel();
-        if($modePost->getUnique(["url" => $url], true)) {
+        if($modePost->getAfew('url', $url, '=')->get()) {
             Error::setError('Такая статья существует');
             return false;
         }
@@ -29,16 +29,15 @@ class CreaterPost
         if(empty(Error::getError())){
             session_start();
             $storage = new Storage($this);
-            $modePost->create(
-                [
-                    'name' => $name,
-                    'url' => $url,
-                    'text' => CreatorMedhodHepler::parseToHtmlText($text),
-                    'group' => $group,
-                    'author' => $_SESSION['login']['slug'],
-                    'img' =>  $storage->saveImage($img, $url),
-                ]
-            );
+            $modePost->
+            setCreate('name', $name)->
+            setCreate('url', $url)->
+            setCreate('text', CreatorMedhodHepler::parseToHtmlText($text))->
+            setCreate('group', $group)->
+            setCreate('author', $_SESSION['login']['slug'])->
+            setCreate('img', $storage->saveImage($img, $url))->
+            create();
+
             return true;
         }
         return  false;

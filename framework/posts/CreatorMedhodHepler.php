@@ -42,21 +42,12 @@ class CreatorMedhodHepler
        if($url == $urlSecond) {
            return  true;
        }
-      else if($modelCheck->getUnique(["url" => $url], true)) {
+      else if($modelCheck->getAfew('url', $url, '=')->get()) {
           return  false;
       }
       return  true;
+    }
+   
 
-    }
-    public static function updataMoreData($elementOld, $elementNew, $models, $what)
-    {
-        foreach ($models as $model) {
-            $model->updateLoneliness($elementNew, $elementOld, $what);
-        }
-    }
-
-    public static function updata($arr, $model, $id)
-    {
-        $model->update($arr, $id);
-    }
+    
 }

@@ -1,6 +1,9 @@
 <?php
+
 namespace Framework\src;
+
 use Framework\src\Database;
+
 abstract class Model
 {
     public $db;
@@ -8,41 +11,11 @@ abstract class Model
     {
         $this->db = new Database();
     }
-    public function get()
+    public function get($fields = true)
     {
-        return $this->db->getData($this->table);
+        return $this->db->getData($this->table, $fields);
     }
-    public function create($data)
-    {
-        $keys = [];
-        $values = [];
-        foreach ($data as $key => $val) {
-            $keys[] = "`{$key}`";
-            $values[] = "'$val'";
-        }
-        $keys = implode(',', $keys);
-        $values = implode(',', $values);
-        $this->db->setUser($keys, $values, $this->table);
-    }
-
-    public function delate($data)
-    {
-        $strGetaFew = "";
-        foreach($data as $essenceName => $essenceData) {
-            $strGetaFew .="`$essenceName`";
-            foreach($essenceData as $essenceKey => $essenceItem) {
-                if($essenceKey == 'operator' || $essenceKey == 'conditions' || is_int($essenceItem)) {
-                    $strGetaFew  .= " $essenceItem ";
-                }
-                else {
-                    $strGetaFew  .= " '$essenceItem' ";
-                }
-            }
-        }
-        $strGetaFew = trim(preg_replace('/[^\S\r\n]+/', ' ', $strGetaFew));
-        $strGetaFew = str_replace('-double', '',  $strGetaFew);
-        return $this->db->delate($this->table, $strGetaFew);
-    }
+    
 
     public function getTable($table)
     {
@@ -58,65 +31,46 @@ abstract class Model
         $this->table = $table;
     }
 
-    public function getUnique($data, $fields = null) {
-        $keys = [];
-        $values = [];
-        foreach ($data as $key => $val) {
-            $keys[] = "`{$key}`";
-            $values[] = "'$val'";
-        }
-        $keys = implode(',', $keys);
-        $values = implode(',', $values);
-        return $this->db->getUnique($this->table, $keys, $values, $fields);
-
-    }
-    public function getaFew($data , $fields = true)
+    public function getaFew($essenceName, $essenceValue, $сonditions = "=", $operators = null)
     {
-        $strGetaFew = "";
-        foreach($data as $essenceName => $essenceData) {
-            $strGetaFew .="`$essenceName`";
-            foreach($essenceData as $essenceKey => $essenceItem) {
-                if($essenceKey == 'operator' || $essenceKey == 'conditions' || is_int($essenceItem)) {
-                    $strGetaFew  .= " $essenceItem ";
-                }
-                else {
-                    $strGetaFew  .= " '$essenceItem' ";
-                }
-            }
-        }
-        $strGetaFew = trim(preg_replace('/[^\S\r\n]+/', ' ', $strGetaFew));
-        $strGetaFew = str_replace('-double', '',  $strGetaFew);
-        return $this->db->getaFew($this->table, $strGetaFew, $fields);
-
-            
+        $this->db->getaFew($essenceName, $essenceValue, $сonditions, $operators);
+        return $this;
     }
-    public function update($dataGood, $id)
+    
+    public function delate() {
+        return $this->db->delate($this->table);
+    }
+
+    public function update($name, $value)
     {
-        $str = '';
-        foreach($dataGood as $item) {
-            foreach($item as $key => $value) {
-                if ($item == end($dataGood)) {
-                    $str .= "`{$key}` = '$value' WHERE `id`= $id";
-                }
-                else {
-                    $str .= "`{$key}` = '$value', ";
-                }
-            }
-        }
-       
-        return  $this->db->update($this->table, $str);
-       
+        $this->db->update($name, $value);
+        return $this;
+    }
+    public function setWhere($name, $value)
+    {
+        $this->db->setWhere($name, $value);
+        return $this;
     }
     public function updateLoneliness($elementNew, $elementOld, $what)
     {
         $str = "`{$what}` = '$elementNew' WHERE `$what`= '$elementOld'";
         return  $this->db->update($this->table, $str);
     }
-    public function getDefinitionData($argument) {
+    public function getDefinitionData($argument)
+    {
         return $this->db->getDefinitionData($this->table, $argument);
     }
-    // public function file($file, SaveFile $type)
-    // {
-    //     $type->saveImage($file);
-    // }
+    public function getUpdate()
+    {
+        return $this->db->getUpdate($this->table);
+    }
+    public function setCreate($name, $value)
+    {
+        $this->db->setCreate($name, $value);
+        return $this;
+    }
+    public function create()
+    {
+        return $this->db->create($this->table);
+    }
 }

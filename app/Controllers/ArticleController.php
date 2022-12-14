@@ -14,17 +14,16 @@ class ArticleController extends Controller
         $modelGrup = new GroupModel();
         $this->render([
             "data" => [
-                'post' => $modelArticle->getUnique(['url' => $data], false),
-                'coments-form' => $modelArticle->getUnique(['url' => $data], false),
-                'comments' => $modelComents->getUnique(['post' => $data], true),
+                'post' => $modelArticle->getAfew('url', $data, '=')->get(false),
+                'coments-form' => $modelArticle->getAfew('url', $data, '=')->get(false),
+                'comments' => $modelComents->getAfew('post', $data, '=')->get(),
                 'upadate-post-form' => [
-                    "post" => $modelArticle->getUnique(['url' => $data], false),
+                    "post" => $modelArticle->getAfew('url', $data, '=')->get(),
                     'group' => $modelGrup->get()
                     ]
                 ,
             ],
         ]);
-
         $this->layout('article');
 
     }

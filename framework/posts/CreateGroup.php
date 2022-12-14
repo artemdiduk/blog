@@ -9,13 +9,10 @@ class CreateGroup
         $groupModel = new GroupModel();
         $name = $data['name'];
         $url = CreatorMedhodHepler::urlConvert($name);
-        if($groupModel->getUnique(["url" => $url], true)) {
+        if ($groupModel->getAfew('url', $url, '=')->get()) {
             return false;
         }
-        $groupModel->create([
-            "name" => $name,
-            "url" => $url,
-        ]);
+        $groupModel->setCreate('name', $name)->setCreate('url', $url)->create();
         return  true;
     }
 

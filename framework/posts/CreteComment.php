@@ -16,14 +16,11 @@ class CreteComment
             return false;
         }
         $storage = new Storage($this);
-        $model->create(
-            [
-                "user" => $nameUser,
-                "text" => $text,
-                'post' =>  $post,
-                'img' => $storage->saveImage($img, $nameUser),
-            ]
-        );
+        $model->setCreate('user', $nameUser)->
+        setCreate('text', $text)->
+        setCreate('post', $post)->
+        setCreate('img', $storage->saveImage($img, $nameUser))->
+        create();
         return true;
     }
 }

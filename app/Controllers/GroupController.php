@@ -14,8 +14,8 @@ class GroupController extends Controller
         $this->render([
             "data" => [
                 'article-theme' => [
-                    "article" => $model->getUnique(['group' => $data], true),
-                    "name-categor" => $modelGroup->getUnique(['url' => $data], false),
+                    "article" => $model->getAfew('group', $data, '=')->get(),
+                    "name-categor" => $modelGroup->getAfew('url', $data, '=')->get(false),
                 ]
             ],
         ]);
