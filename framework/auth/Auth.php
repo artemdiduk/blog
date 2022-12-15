@@ -7,18 +7,18 @@ use Framework\auth\AuthUser;
 class Auth
 {
 
-    public static function acceptAuth($email, $password) {
+    public static function acceptAuth($email, $password, $error, $model) {
         $login = new Authorization;
-        if($login->login($email, $password)) {
+        if($login->login($email, $password, $error, $model)) {
             self::user();
             return true;
         }
         return false;
     }
-    public  static  function acceptAuthRegistration($name, $email, $password)
+    public  static  function acceptAuthRegistration($name, $email, $password, $error, $model)
     {
         $registr = new Registration();
-        if ($registr->regestration($name, $email, $password)) {
+        if ($registr->regestration($name, $email, $password, $error, $model)) {
             self::user();
             return true;
         }

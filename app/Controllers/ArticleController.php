@@ -8,18 +8,37 @@ use App\Models\ArticleModel;
 use App\Models\GroupModel;
 class ArticleController extends Controller
 {
+    private $group;
+    private $article;
+    private $comments;
+    public function __construct(GroupModel $group, ArticleModel $article, CommentsModel $comments)
+    {
+        $this->group = $group;
+        $this->article = $article;
+        $this->comments = $comments;
+    }
+    public function getArticle()
+    {
+        return $this->article;
+    }
+    public function getGroup()
+    {
+        return $this->group;
+    }
+    public function getComments()
+    {
+        return $this->comments;
+    }
     public function page($data = null) {
-        $modelArticle = new ArticleModel();
-        $modelComents = new CommentsModel();
-        $modelGrup = new GroupModel();
+      
         $this->render([
             "data" => [
-                'post' => $modelArticle->getAfew('url', $data, '=')->get(false),
-                'coments-form' => $modelArticle->getAfew('url', $data, '=')->get(false),
-                'comments' => $modelComents->getAfew('post', $data, '=')->get(),
+                'post' => $this->article->getAfew('url', $data)->get(false),
+                'coments-form' => $this->article->getAfew('url', $data, '=')->get(false),
+                'comments' => $this->comments->getAfew('post', $data, '=')->get(),
                 'upadate-post-form' => [
-                    "post" => $modelArticle->getAfew('url', $data, '=')->get(),
-                    'group' => $modelGrup->get()
+                    "post" => $this->article->getAfew('url', $data, '=')->get(),
+                    'group' => $this->group->get()
                     ]
                 ,
             ],

@@ -2,17 +2,15 @@
 
 namespace Framework\posts;
 
-use App\Models\GroupModel;
 class CreateGroup
 {
-    public  function createGroup($data) {
-        $groupModel = new GroupModel();
+    public  function createGroup($data, $model) {
         $name = $data['name'];
         $url = CreatorMedhodHepler::urlConvert($name);
-        if ($groupModel->getAfew('url', $url, '=')->get()) {
+        if ($model->getAfew('url', $url, '=')->get()) {
             return false;
         }
-        $groupModel->setCreate('name', $name)->setCreate('url', $url)->create();
+        $model->setCreate('name', $name)->setCreate('url', $url)->create();
         return  true;
     }
 

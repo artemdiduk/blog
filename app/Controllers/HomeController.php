@@ -5,11 +5,17 @@ use Framework\src\Controller;
 use App\Models\GroupModel;
 class HomeController extends  Controller
 {
+    private $group;
+
+    public function __construct(GroupModel $group)
+    {
+        $this->group = $group;
+    
+    }
     public function page($data = null) {
-        $model = new GroupModel();
         $this->render([
             "data" => [
-                'all-theame' => $model->get()
+                'all-theame' => $this->group->get()
             ],
         ]);
         

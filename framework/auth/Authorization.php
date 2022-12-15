@@ -1,26 +1,17 @@
 <?php
 
 namespace Framework\auth;
-use App\Models\UserModel;
-use Framework\ErrorReporting\Error;
+
+
 class Authorization
 {
-    public function login($email, $password) {
-        $user = new UserModel;
-        $user = $user->getAfew(
-            [
-                "email" => [
-                    "operator" => "=",
-                    "data" => $email,
-                ],
-            ],
-            false
-        );
+    public function login($email, $password, $error, $user) {
+        $user = $user->getAfew('email', $email)->get(false);
         if (!$user) {
-            Error::setError("Неверные данные");
+            $error::setError("Неверные данные");
             return false;
         }
-        if (password_verify($password, $user['password']) && empty(Error::getError())) {
+        if (password_verify($password, $user['password']) && empty($error::getError())) {
             session_start();
             $_SESSION['login'] = $user;
             return true;

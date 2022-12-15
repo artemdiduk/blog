@@ -10,9 +10,9 @@ class Router
         return $this->router;
     }
     public function modelParse($data) {
-        $model = $data['models'];
         $sign = $data['read'];
         $controller = $data['controller'];
+        $model = $data['models'];
         $result = $model->getDefinitionData($sign);
         foreach($result as $parseData) {
             $this->setRout($parseData[$sign], $controller);

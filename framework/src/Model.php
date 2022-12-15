@@ -7,7 +7,7 @@ use Framework\src\Database;
 abstract class Model
 {
     public $db;
-    public function __construct()
+    public function __construct(Database $db)
     {
         $this->db = new Database();
     }
@@ -50,11 +50,6 @@ abstract class Model
     {
         $this->db->setWhere($name, $value);
         return $this;
-    }
-    public function updateLoneliness($elementNew, $elementOld, $what)
-    {
-        $str = "`{$what}` = '$elementNew' WHERE `$what`= '$elementOld'";
-        return  $this->db->update($this->table, $str);
     }
     public function getDefinitionData($argument)
     {

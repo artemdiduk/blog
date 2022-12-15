@@ -5,6 +5,7 @@ use App\Service\Helper;
 use Framework\auth\Auth;
 abstract class Controller
 {
+    
     public static function redirect($page)
     {
         header("Location: $page");

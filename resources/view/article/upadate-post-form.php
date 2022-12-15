@@ -1,7 +1,7 @@
 <?php
 
 use App\Service\Helper;
-$post = $data['post'];
+$post = $data['post'][0];
 $allTheame = $data['group'];
 
 ?>

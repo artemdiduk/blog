@@ -1,34 +1,24 @@
 <?php
 use Framework\Router;
-use App\Controllers\HomeController;
-use App\Controllers\RegisterationController;
-use App\Controllers\LoginController;
-use App\Controllers\GroupController;
-use App\Controllers\CreateArticleController;
-use App\Controllers\CreateGroupController;
-use App\Models\GroupModel;
-use App\Models\ArticleModel;
-use App\Controllers\ArticleController;
-use App\Controllers\CreteCommentController;
-use App\Controllers\DelateConroller;
-use App\Controllers\UpdatePostConroller;
+use Framework\src\Containers;
+$containers = new Containers();
 $routs = new Router();
-$routs->setRout('/', new HomeController());
-$routs->setRout('registration', new RegisterationController());
-$routs->setRout('login', new LoginController());
-$routs->setRout('group', new GroupController());
-$routs->setRout('group/create', new CreateGroupController());
-$routs->setRout('create/article', new CreateArticleController());
-$routs->setRout('сomment/create', new CreteCommentController());
-$routs->setRout('delate/post', new DelateConroller());
-$routs->setRout('update/post', new UpdatePostConroller());
+$routs->setRout('/', $containers->controllers['HomeController']);
+$routs->setRout('registration', $containers->controllers['RegisterationController']);
+$routs->setRout('login', $containers->controllers['LoginController']);
+$routs->setRout('group', $containers->controllers['GroupController']);
+$routs->setRout('group/create', $containers->controllers['CreateGroupController']);
+$routs->setRout('create/article', $containers->controllers['CreateArticleController']);
+$routs->setRout('сomment/create', $containers->controllers['CreteCommentController']);
+$routs->setRout('delate/post', $containers->controllers['DelateConroller']);
+$routs->setRout('update/post', $containers->controllers['UpdatePostConroller']);
 $routs->modelParse([
-    "controller" => new GroupController(),
-    'models' => new GroupModel,
+    "controller" => $containers->controllers['GroupController'],
+    'models' => $containers->controllers['GroupController']->getGroup(),
     'read' => "url",
 ]);
 $routs->modelParse([
-    "controller" => new ArticleController(),
-    'models' => new ArticleModel(),
+    "controller" => $containers->controllers['ArticleController'],
+    'models' => $containers->controllers['ArticleController']->getArticle(),
     'read' => "url",
 ]);

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 use App\Models\ArticleModel;
 use App\Models\GroupModel;
@@ -7,19 +6,41 @@ use Framework\src\Controller;
 use Framework\ErrorReporting\Error;
 use Framework\posts\Creater;
 use Framework\posts\CreatorMedhodHepler;
+use Framework\storage\Storage;
 class CreateArticleController extends Controller
 {
+    private $group;
+    private $article;
+    private $errorHendler;
+    private $createPost;
+    private $storage;
+    private $createrHelper;
+    public function __construct(
+    GroupModel $group, 
+    ArticleModel $article, 
+    Error $errorHendler,
+    Creater $createPost, 
+    Storage $storage,
+    CreatorMedhodHepler $createrHelper
+    )
+    {
+        $this->group = $group;
+        $this->createPost= $createPost;
+        $this->errorHendler = $errorHendler;
+        $this->article = $article;
+        $this->storage = $storage;
+        $this->createrHelper = $createrHelper;
+    }
     public function page($data = null)
     {
-        $model = new GroupModel();
         $redirect =  @$_POST['group']. '/' . CreatorMedhodHepler::urlConvert(@$_POST['name']);
         $this->render([
             "data" => [
                 'form-add-post' => [
-                    'group' => $model->get(),
+                    'group' => $this->group->get(),
                     'errorPost' =>
-                        Error::isError(
-                        Creater::acceptCreatePost(
+                        $this->errorHendler::isError(
+                        $this->createPost::acceptCreatePost(
                             [
                                 'name' =>  @$_POST['name'],
                                 'url' => @$_POST['url'],
@@ -27,6 +48,10 @@ class CreateArticleController extends Controller
                                 'img' => @$_FILES['images'],
                                 'text' =>  @$_POST['description'],
                             ],
+                            $this->article,
+                            $this->storage,
+                            $this->errorHendler,
+                            $this->createrHelper
                         ),
                         "POST",
                         "/blog/$redirect"

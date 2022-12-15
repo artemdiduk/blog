@@ -4,28 +4,30 @@ namespace Framework\posts;
 use Framework\posts\CreatorMedhodHepler;
 use App\Models\ArticleModel;
 use App\Models\CommentsModel;
-use Framework\services\Services;
+use Framework\src\Database;
 use Framework\storage\Storage;
 class UpdatePost
 {
-    public function updatePost($data)
+    private $storage;
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
+    public function updatePost($data, $modelArticle, $modelComments,  $helper)
     {
         $name = trim(preg_replace('/[^\S\r\n]+/', ' ', $data['name']));
         $group = $data['group'];
-        $url = $group . '/' . CreatorMedhodHepler::urlConvert($name);
+        $url = $group . '/' . $helper::urlConvert($name);
         $text = htmlspecialchars(trim(preg_replace('/[^\S\r\n]+/', ' ', $data['text'])));
         $id = $data['id'];
         $img = $data['img'];
         $author = $data['author'];
         $oldUrl = $data['oldUrl'];
-        $modelArticle = new ArticleModel();
-        $modelComments = new CommentsModel();
         $post = $modelArticle->getAfew('id', $id, '=', "AND")->getAfew('author', $author, '=')->get(false);
         if(!$post) {
             return false;
         }
-
-        if(!CreatorMedhodHepler::checkUrlDublicate($url, $oldUrl, $modelArticle)) {
+        if(!$helper::checkUrlDublicate($url, $oldUrl, $modelArticle)) {
             return false;
         }
         if(strlen($name) >= 200) {
@@ -37,18 +39,18 @@ class UpdatePost
 
         $imgOld = $post['img'];
 
-        $services  = new Storage($this);
+       
         if($img['tmp_name'] == '') {
             $img =  $imgOld;
         }
-        else if(!CreatorMedhodHepler::validateImg($img, 3145728, "image/png, image/jpeg")) {
+        else if(!$helper::validateImg($img, 3145728, "image/png, image/jpeg")) {
             return false;
         }
         else {
-            $img = $services->saveImage($img, $url);
+            $img = $this->storage->saveImage($img, $url);
         }
         $modelArticle->update("name", $name)->
-        update("text", CreatorMedhodHepler::parseToHtmlText($text))->
+        update("text", $helper::parseToHtmlText($text))->
         update('group', $group)->
         update('url', $url)->
         update('img', $img)->

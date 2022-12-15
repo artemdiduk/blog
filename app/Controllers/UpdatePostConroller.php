@@ -1,22 +1,46 @@
 <?php
 namespace App\Controllers;
-
+use App\Models\ArticleModel;
+use App\Models\CommentsModel;
 use Framework\ErrorReporting\Error;
+use Framework\src\Controller;
 use Framework\posts\Creater;
 use Framework\posts\CreatorMedhodHepler;
-use Framework\src\Controller;
+use Framework\storage\Storage;
 class UpdatePostConroller extends Controller
 {
+   
+    private $article;
+    private $comments;
+    private $errorHendler;
+    private $updatePost;
+    private $storage;
+    private $createrHelper;
+    public function __construct(
+        ArticleModel $article,
+        CommentsModel $comments,
+        Creater $updatePost,
+        Storage $storage,
+        CreatorMedhodHepler $createrHelper,
+        Error $errorHendler
+    ) {
+        $this->updatePost = $updatePost;
+        $this->article = $article;
+        $this->comments = $comments;
+        $this->storage = $storage;
+        $this->createrHelper = $createrHelper;
+        $this->errorHendler =  $errorHendler;
+    }
     public function page($data = null)
     {
         session_start();
-        $redirect =  @$_POST['group']. '/' . CreatorMedhodHepler::urlConvert(@$_POST['name']);
+        $redirect =  @$_POST['group']. '/' . $this->createrHelper::urlConvert(@$_POST['name']);
         $this->render([
             "data" => [
                 'upadate-post-form' => [
                     'errorPost' =>
-                        Error::isError(
-                            Creater::acceptUpdatePost(
+                        $this->errorHendler::isError(
+                            $this->updatePost::acceptUpdatePost(
                                 [
                                     'name' =>  @$_POST['name'],
                                     'url' => @$_POST['url'],
@@ -27,6 +51,10 @@ class UpdatePostConroller extends Controller
                                     'author' => $_SESSION['login']['slug'],
                                     'oldUrl' => @$_POST['old-url'],
                                 ],
+                                $this->article,
+                                $this->comments,
+                                $this->storage,
+                                $this->createrHelper
                             ),
                             "POST",
                             "/blog/$redirect",
