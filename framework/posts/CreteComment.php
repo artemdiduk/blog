@@ -20,12 +20,13 @@ class CreteComment
         if(!$helper::validateImg($img,3145728, "image/png, image/jpeg",)) {
             return false;
         }
-        
-        $model->setCreate('user', $nameUser)->
-        setCreate('text', $text)->
-        setCreate('post', $post)->
-        setCreate('img', $this->storage->saveImage($img, $nameUser))->
-        create();
+        $model->createComments([
+                'user' => $nameUser,
+                'text' => $text,
+                'post' =>  $post,
+                'img' => $this->storage->saveImage($img, $nameUser)
+        ]);
+       
         return true;
     }
 }

@@ -2,20 +2,22 @@
 
 namespace App\Controllers;
 
-use App\Models\CommentsModel;
 use Framework\src\Controller;
-use App\Models\ArticleModel;
-use App\Models\GroupModel;
+use App\Repository\ArticleRepository;
+use App\Repository\CommentsRepository;
+use App\Repository\GroupRepository;
+
 class ArticleController extends Controller
 {
     private $group;
     private $article;
     private $comments;
-    public function __construct(GroupModel $group, ArticleModel $article, CommentsModel $comments)
+    public function __construct(GroupRepository $group, ArticleRepository $article, CommentsRepository $comments)
     {
         $this->group = $group;
         $this->article = $article;
         $this->comments = $comments;
+      
     }
     public function getArticle()
     {
@@ -30,15 +32,14 @@ class ArticleController extends Controller
         return $this->comments;
     }
     public function page($data = null) {
-      
         $this->render([
             "data" => [
-                'post' => $this->article->getAfew('url', $data)->get(false),
-                'coments-form' => $this->article->getAfew('url', $data, '=')->get(false),
-                'comments' => $this->comments->getAfew('post', $data, '=')->get(),
+                'post' => $this->article->getPostUrl('url', $data)->get(false),
+                'coments-form' => $this->article->getPostUrl('url', $data)->get(false),
+                'comments' => $this->comments->getCommentsPost('post', $data)->get(),
                 'upadate-post-form' => [
-                    "post" => $this->article->getAfew('url', $data, '=')->get(),
-                    'group' => $this->group->get()
+                    "post" => $this->article->getPostUrl('url', $data)->get(),
+                    'group' => $this->group->getAll()
                     ]
                 ,
             ],

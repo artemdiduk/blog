@@ -9,8 +9,8 @@ class Registration
         $email = trim($email);
         $password = trim($password);
         $slug = trim($name);
-        $userEmail = $user->getAfew('email', $email)->get();
-        $userName = $user->getAfew('name', $name)->get();
+        $userEmail = $user->getUserEmail('email', $email)->get();
+        $userName = $user->getUserName('name', $name)->get();
         if ($userEmail) {
             $error::setError("Такая почта уже зарегестрируваная");
             return false;
@@ -26,14 +26,14 @@ class Registration
             $error::setError("Пароль минимум 6 символов, только лат. Буквы, с цифрами и одной заглавной");
         }
         if (empty($error::getError())) {
-            $user->
-            setCreate('name', $name)->
-            setCreate('email', $email)->
-            setCreate('password', password_hash($password, PASSWORD_DEFAULT))->
-            setCreate('slug', $slug)->
-            create();
+            $user->createUser([
+                'name' => $name,
+                'email' => $email,
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'slug' => $slug
+            ]);
             session_start();
-            $_SESSION['login'] = $user->getaFew("name", $name)->get(false);
+            $_SESSION['login'] = $user->getUserName("name", $name)->get(false);
             return true;
         }
         return  false;

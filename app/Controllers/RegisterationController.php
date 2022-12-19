@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Repository\UserRepository;
 use Framework\src\Controller;
 use Framework\auth\Auth;
 use Framework\ErrorReporting\Error;
@@ -11,7 +12,7 @@ class RegisterationController extends Controller
 {   private $user;
     private $errorHendler;
     private $auth;
-    public function __construct(UserModel $user, Error $errorHendler, Auth $auth)
+    public function __construct(UserRepository $user, Error $errorHendler, Auth $auth)
     {
         $this->user = $user;
         $this->errorHendler = $errorHendler;

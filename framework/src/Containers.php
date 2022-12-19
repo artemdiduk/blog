@@ -14,6 +14,10 @@ use App\Controllers\LoginController;
 use App\Controllers\RegisterationController;
 use App\Controllers\UpdatePostConroller;
 use App\Models\UserModel;
+use App\Repository\ArticleRepository;
+use App\Repository\CommentsRepository;
+use App\Repository\GroupRepository;
+use App\Repository\UserRepository;
 use Framework\auth\Auth;
 use Framework\ErrorReporting\Error;
 use Framework\posts\Creater;
@@ -27,22 +31,34 @@ class Containers {
     public function __construct() 
     {
         $this->controllers['ArticleController'] = new ArticleController(
-            new GroupModel(
-                new Database()
+            new GroupRepository(
+                new GroupModel(
+                    new Database()
+                )
             ),
-            new ArticleModel(
-                new Database()
+          
+            new ArticleRepository(
+                new ArticleModel(
+                    new Database()
+                ),
             ),
-            new CommentsModel(
-                new Database()
+            new CommentsRepository(
+                new CommentsModel(
+                    new Database()
+                )
             )
         );
         $this->controllers['CreateArticleController'] = new CreateArticleController(
-            new GroupModel(
-                new Database()
+            new GroupRepository(
+                new GroupModel(
+                    new Database()
+                )
             ),
-            new ArticleModel(
-                new Database()
+
+            new ArticleRepository(
+                new ArticleModel(
+                    new Database()
+                ),
             ),
             new Error(),
             new Creater(),
@@ -50,63 +66,86 @@ class Containers {
             new CreatorMedhodHepler()
         );
         $this->controllers['GroupController'] = new GroupController(
-            new GroupModel(
-                new Database()
+            new GroupRepository(
+                new GroupModel(
+                    new Database()
+                )
             ),
-            new ArticleModel(
-                new Database()
+
+            new ArticleRepository(
+                new ArticleModel(
+                    new Database()
+                ),
             ),
         );
         $this->controllers['HomeController'] = new HomeController(
-            new GroupModel(
-                new Database()
+            new GroupRepository(
+                new GroupModel(
+                    new Database()
+                )
             ),
         );
         $this->controllers['CreateGroupController'] = new CreateGroupController(
-            new GroupModel(
-                new Database()
+            new GroupRepository(
+                new GroupModel(
+                    new Database()
+                )
             ),
             new Creater(),
             new CreatorMedhodHepler()
         );
         $this->controllers['CreteCommentController'] = new CreteCommentController(
-            new CommentsModel(
-                new Database()
+            new CommentsRepository(
+                new CommentsModel(
+                    new Database()
+                )
             ),
             new Creater(),
             new Storage(CreteComment::class),
             new CreatorMedhodHepler()
         );
         $this->controllers['DelateConroller'] = new DelateConroller(
-            new ArticleModel(
-                new Database()
+            new ArticleRepository(
+                new ArticleModel(
+                    new Database()
+                ),
             ),
-            new CommentsModel(
-                new Database()
+            new CommentsRepository(
+                new CommentsModel(
+                    new Database()
+                )
             ),
             new Creater(),
 
         );
         $this->controllers['LoginController'] = new LoginController(
-            new UserModel(
-                new Database()
+            new UserRepository(
+                new UserModel(
+                    new Database()
+                ),
             ),
             new Error(),
             new Auth()
         );
         $this->controllers['RegisterationController'] = new RegisterationController(
-            new UserModel(
-                new Database() 
+            new UserRepository(
+                new UserModel(
+                    new Database()
+                ),
             ),
             new Error(),
             new Auth()
         );
         $this->controllers['UpdatePostConroller'] = new UpdatePostConroller(
-            new ArticleModel(
-                new Database()
+            new ArticleRepository(
+                new ArticleModel(
+                    new Database()
+                ),
             ),
-            new CommentsModel(
-                new Database()
+            new CommentsRepository(
+                new CommentsModel(
+                    new Database()
+                )
             ),
             new Creater(),
             new Storage(UpdatePost::class),
@@ -115,5 +154,3 @@ class Containers {
         );
     }
 }
-
-?>

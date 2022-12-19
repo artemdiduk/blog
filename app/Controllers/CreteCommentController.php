@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\CommentsModel;
+use App\Repository\CommentsRepository;
 use Framework\src\Controller;
 use Framework\posts\Creater;
 use Framework\storage\Storage;
@@ -14,7 +15,7 @@ class CreteCommentController extends Controller
     private $storage;
     private $createrHelper;
     public function __construct(
-        CommentsModel $comments,
+        CommentsRepository $comments,
         Creater $createComment,
         Storage $storage,
         CreatorMedhodHepler $createrHelper

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
-use App\Models\ArticleModel;
-use App\Models\CommentsModel;
+use App\Repository\ArticleRepository;
+use App\Repository\CommentsRepository;
 use Framework\ErrorReporting\Error;
 use Framework\src\Controller;
 use Framework\posts\Creater;
@@ -17,8 +17,8 @@ class UpdatePostConroller extends Controller
     private $storage;
     private $createrHelper;
     public function __construct(
-        ArticleModel $article,
-        CommentsModel $comments,
+        ArticleRepository $article,
+        CommentsRepository $comments,
         Creater $updatePost,
         Storage $storage,
         CreatorMedhodHepler $createrHelper,

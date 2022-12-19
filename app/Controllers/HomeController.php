@@ -2,12 +2,14 @@
 
 namespace App\Controllers;
 use Framework\src\Controller;
-use App\Models\GroupModel;
+
+use App\Repository\GroupRepository;
+
 class HomeController extends  Controller
 {
     private $group;
 
-    public function __construct(GroupModel $group)
+    public function __construct(GroupRepository $group)
     {
         $this->group = $group;
     
@@ -15,7 +17,7 @@ class HomeController extends  Controller
     public function page($data = null) {
         $this->render([
             "data" => [
-                'all-theame' => $this->group->get()
+                'all-theame' => $this->group->getAll()
             ],
         ]);
         

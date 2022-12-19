@@ -6,7 +6,7 @@ namespace Framework\auth;
 class Authorization
 {
     public function login($email, $password, $error, $user) {
-        $user = $user->getAfew('email', $email)->get(false);
+        $user = $user->getUserEmail('email', $email)->get(false);
         if (!$user) {
             $error::setError("Неверные данные");
             return false;

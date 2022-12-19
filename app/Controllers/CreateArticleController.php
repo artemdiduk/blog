@@ -1,7 +1,8 @@
 <?php
 namespace App\Controllers;
-use App\Models\ArticleModel;
-use App\Models\GroupModel;
+
+use App\Repository\ArticleRepository;
+use App\Repository\GroupRepository;
 use Framework\src\Controller;
 use Framework\ErrorReporting\Error;
 use Framework\posts\Creater;
@@ -16,8 +17,8 @@ class CreateArticleController extends Controller
     private $storage;
     private $createrHelper;
     public function __construct(
-    GroupModel $group, 
-    ArticleModel $article, 
+    GroupRepository $group,
+    ArticleRepository $article, 
     Error $errorHendler,
     Creater $createPost, 
     Storage $storage,
@@ -37,7 +38,7 @@ class CreateArticleController extends Controller
         $this->render([
             "data" => [
                 'form-add-post' => [
-                    'group' => $this->group->get(),
+                    'group' => $this->group->getAll(),
                     'errorPost' =>
                         $this->errorHendler::isError(
                         $this->createPost::acceptCreatePost(

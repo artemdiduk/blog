@@ -1,17 +1,16 @@
 <?php
 namespace App\Controllers;
-use App\Models\ArticleModel;
-use App\Models\CommentsModel;
 use Framework\src\Controller;
 use Framework\posts\Creater;
-
+use App\Repository\ArticleRepository;
+use App\Repository\CommentsRepository;
 
 class DelateConroller extends Controller
 {
     private $post;
     private $comments;
     private $delate;
-    public function __construct(ArticleModel $post, CommentsModel $comments, Creater $delate)
+    public function __construct(ArticleRepository $post, CommentsRepository $comments, Creater $delate)
     {
         $this->post = $post;
         $this->comments= $comments;

@@ -38,16 +38,7 @@ class CreatorMedhodHepler
         }
         return implode(PHP_EOL, $html);
     }
-    public  static  function checkUrlDublicate($url, $urlSecond, $modelCheck) {
-       if($url == $urlSecond) {
-           return  true;
-       }
-      else if($modelCheck->getAfew('url', $url, '=')->get()) {
-          return  false;
-      }
-      return  true;
-    }
-   
+
 
     
 }

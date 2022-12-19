@@ -1,23 +1,19 @@
 <?php
 namespace App\Controllers;
 use Framework\src\Controller;
-use App\Models\ArticleModel;
-use App\Models\GroupModel;
-use Framework\src\Database;
+use App\Repository\ArticleRepository;
+use App\Repository\GroupRepository;
 
 class GroupController extends Controller
 {
     private $group;
     private $article;
-    public function __construct(GroupModel $group, ArticleModel $article)
+    public function __construct(GroupRepository $group, ArticleRepository $article)
     {
         $this->group = $group;
         $this->article = $article;
     }
-    public function getArticle()
-    {
-        return $this->article;
-    }
+    
     public function getGroup() {
         return $this->group;
     }
@@ -27,8 +23,8 @@ class GroupController extends Controller
         $this->render([
             "data" => [
                 'article-theme' => [
-                    "article" => $this->article->getAfew('group', $data, '=')->get(),
-                    "name-categor" => $this->group->getAfew('url', $data, '=')->get(false),
+                    "article" => $this->article->getPostGroup('group', $data)->get(),
+                    "name-categor" => $this->group->getGroupUrl('url', $data)->get(false),
                 ]
             ],
         ]);

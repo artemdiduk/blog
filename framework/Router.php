@@ -13,7 +13,7 @@ class Router
         $sign = $data['read'];
         $controller = $data['controller'];
         $model = $data['models'];
-        $result = $model->getDefinitionData($sign);
+        $result = $model->getRoutsModel($sign);
         foreach($result as $parseData) {
             $this->setRout($parseData[$sign], $controller);
         }

@@ -16,7 +16,7 @@ class CreaterPost
         $url = $group . '/' . $helper::urlConvert($name);
         $text = $data['text'];
         $img = $data['img'];
-        if($model->getAfew('url', $url, '=')->get()) {
+        if($model->getPostUrl('url', $url)->get()) {
             $error::setError('Такая статья существует');
             return false;
         }
@@ -31,14 +31,14 @@ class CreaterPost
         }
         if(empty($error::getError())){
             session_start();
-            $model->
-            setCreate('name', $name)->
-            setCreate('url', $url)->
-            setCreate('text', $helper::parseToHtmlText($text))->
-            setCreate('group', $group)->
-            setCreate('author', $_SESSION['login']['slug'])->
-            setCreate('img', $this->storage->saveImage($img, $url))->
-            create();
+            $model->createPost([
+                'name' => $name,
+                'url' => $url,
+                'text' =>  $helper::parseToHtmlText($text),
+                'group' => $group,
+                'author' => $_SESSION['login']['slug'],
+                'img' => $this->storage->saveImage($img, $url),
+            ]);
 
             return true;
         }

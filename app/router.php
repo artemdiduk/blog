@@ -12,11 +12,11 @@ $routs->setRout('create/article', $containers->controllers['CreateArticleControl
 $routs->setRout('сomment/create', $containers->controllers['CreteCommentController']);
 $routs->setRout('delate/post', $containers->controllers['DelateConroller']);
 $routs->setRout('update/post', $containers->controllers['UpdatePostConroller']);
-$routs->modelParse([
-    "controller" => $containers->controllers['GroupController'],
-    'models' => $containers->controllers['GroupController']->getGroup(),
-    'read' => "url",
-]);
+    $routs->modelParse([
+        "controller" => $containers->controllers['GroupController'],
+        'models' => $containers->controllers['GroupController']->getGroup(),
+        'read' => "url",
+    ]);
 $routs->modelParse([
     "controller" => $containers->controllers['ArticleController'],
     'models' => $containers->controllers['ArticleController']->getArticle(),
