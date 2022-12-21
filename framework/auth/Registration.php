@@ -1,6 +1,9 @@
 <?php
 
 namespace Framework\auth;
+
+use App\Event\RegistrationEvent;
+
 class Registration
 {
     public function regestration($name, $email, $password, $error, $user)
@@ -26,6 +29,7 @@ class Registration
             $error::setError("Пароль минимум 6 символов, только лат. Буквы, с цифрами и одной заглавной");
         }
         if (empty($error::getError())) {
+          
             $user->createUser([
                 'name' => $name,
                 'email' => $email,
@@ -33,7 +37,9 @@ class Registration
                 'slug' => $slug
             ]);
             session_start();
-            $_SESSION['login'] = $user->getUserName("name", $name)->get(false);
+            $user = $user->getUserName("name", $name)->get(false);
+           (new RegistrationEvent($user))->notify();
+            $_SESSION['login'] = $user;
             return true;
         }
         return  false;

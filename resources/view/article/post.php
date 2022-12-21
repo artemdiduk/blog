@@ -12,8 +12,10 @@ $post = $data;
         </div>
     </div>
 <?php endif; ?>
+<?php
 
-<?php if (Helper::$isLogin['name'] == $post['author']) : ?>
+?>
+<?php if ((@Helper::$isLogin['name'] == $post['author']) ) : ?>
     <div style="margin-top: 10px" class="row justify-content-end">
         <form method="post" action="/blog/delate/post" class="col-md-3">
             <input type="text" hidden name="post" value="<?= $post['url'] ?>">

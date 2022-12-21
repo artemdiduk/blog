@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Час створення: Лис 24 2022 р., 14:27
+-- Час створення: Гру 21 2022 р., 15:59
 -- Версія сервера: 10.4.24-MariaDB
 -- Версія PHP: 8.1.6
 
@@ -41,7 +41,8 @@ CREATE TABLE `coments` (
 
 INSERT INTO `coments` (`id`, `user`, `text`, `post`, `img`) VALUES
 (10, 'testuser', 'Статья позаимствованная с сайту https://linuxcool.net/', 'linux/3-luchshikh-distributivov-linux-dlya-polzovatelei', 'test228637f6cf0adb15.png'),
-(11, 'testuser', 'Статья позаимствованная с сайту https://vps.ua/wiki/top-command/', 'linux/komanda-top-v-linux', '');
+(11, 'testuser', 'Статья позаимствованная с сайту https://vps.ua/wiki/top-command/', 'linux/komanda-top-v-linux', ''),
+(12, 'testuser2', 'Hello World', 'linux/3-luchshikh-distributivov-linux-dlya-polzovatelei', '');
 
 -- --------------------------------------------------------
 
@@ -105,7 +106,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `slug`, `email`, `password`) VALUES
-(18, 'testuser', 'testUser', 'mail@mail', '5ec0e10dca7721da9ef59f14a19d0780');
+(18, 'testuser', 'testUser', 'mail@mail', '5ec0e10dca7721da9ef59f14a19d0780'),
+(19, 'testuser2', 'testuser2', 'testUser2@mail', '$2y$10$tV/oy8da5Yhd1ZvYvDsWr.LJT8CJwrJHnXHYzxXDqL.W9RBVmvdgy');
 
 --
 -- Індекси збережених таблиць
@@ -143,7 +145,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблиці `coments`
 --
 ALTER TABLE `coments`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблиці `group`
@@ -161,7 +163,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT для таблиці `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
